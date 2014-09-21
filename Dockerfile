@@ -1,9 +1,9 @@
 FROM phusion/baseimage:latest
 MAINTAINER Stefan Siegl <stesie@brokenpipe.de>
 
-RUN apt-get update
-RUN apt-get -y install git subversion make g++ python
-RUN apt-get clean
+RUN apt-get update && \
+	apt-get -y install git subversion make g++ python wget libxml2-dev autoconf gdb screen && \
+	apt-get clean
 
 # depot tools
 RUN git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git /usr/local/depot_tools
@@ -24,11 +24,9 @@ RUN cd /usr/local/src/v8 && \
 	make clean
 
 # fetch and install php5
-RUN apt-get -y install wget && apt-get clean
 RUN cd /usr/local/src && \
 	wget http://de1.php.net/distributions/php-5.5.17.tar.bz2 && \
 	tar xvjf php-5.5.17.tar.bz2
-RUN apt-get -y install libxml2-dev && apt-get clean
 RUN cd /usr/local/src/php-5.5.17 && \
 	./configure --enable-maintainer-zts --enable-debug && \
 	make -j4 && \
@@ -37,7 +35,6 @@ RUN cd /usr/local/src/php-5.5.17 && \
 
 # get v8js, compile and install
 RUN git clone https://github.com/preillyme/v8js.git /usr/local/src/v8js
-RUN apt-get -y install autoconf gdb screen && apt-get clean
 RUN cd /usr/local/src/v8js && phpize && ./configure --with-v8js=/usr/local/v8
 ENV NO_INTERACTION 1
 RUN cd /usr/local/src/v8js && make all test install
