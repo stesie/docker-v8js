@@ -2,7 +2,8 @@ FROM phusion/baseimage:latest
 MAINTAINER Stefan Siegl <stesie@brokenpipe.de>
 
 RUN apt-get update && \
-    apt-get -y install git subversion make g++ python2.7 curl php7.0-dev chrpath wget && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        git subversion make g++ python2.7 curl php7.0-dev chrpath wget && \
     ln -s /usr/bin/python2.7 /usr/bin/python && \
     \
     git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git /tmp/depot_tools && \
