@@ -21,7 +21,7 @@ RUN apt-get update && \
     cp -R /usr/local/src/v8/include /usr/local && \
     chrpath -r '$ORIGIN' /usr/local/lib/libv8.so && \
     \
-    git clone https://github.com/preillyme/v8js.git /usr/local/src/v8js && \
+    git clone https://github.com/phpv8/v8js.git /usr/local/src/v8js && \
     cd /usr/local/src/v8js && phpize && ./configure --with-v8js=/usr/local && \
     export NO_INTERACTION=1 && make all -j4 && make test install && \
     \

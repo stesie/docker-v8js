@@ -1,7 +1,7 @@
 docker-v8js
 ===========
 
-Dockerfile for [V8Js PHP extension](https://github.com/preillyme/v8js)
+Dockerfile for [V8Js PHP extension](https://github.com/phpv8/v8js)
 
 
 License
