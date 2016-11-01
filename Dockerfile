@@ -17,7 +17,7 @@ RUN apt-get update && \
     \
     mkdir -p /usr/local/lib && \
     cp /usr/local/src/v8/out/native/lib.target/lib*.so /usr/local/lib && \
-    echo -e "create /usr/local/lib/libv8_libplatform.a\naddlib out/native/obj.target/src/libv8_libplatform.a\nsave\nend" | ar -M && \
+    echo "create /usr/local/lib/libv8_libplatform.a\naddlib out/native/obj.target/src/libv8_libplatform.a\nsave\nend" | ar -M && \
     cp -R /usr/local/src/v8/include /usr/local && \
     chrpath -r '$ORIGIN' /usr/local/lib/libv8.so && \
     \
