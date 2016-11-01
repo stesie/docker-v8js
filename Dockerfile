@@ -10,7 +10,9 @@ RUN apt-get update && \
     export PATH="$PATH:/tmp/depot_tools" && \
     \
     cd /usr/local/src && fetch v8 && cd v8 && \
-    make native library=shared snapshot=off -j4 && \
+    export GYPFLAGS="-Dv8_use_external_startup_data=0" && \
+    export GYPFLAGS="${GYPFLAGS} -Dlinux_use_bundled_gold=0" && \
+    make native library=shared snapshot=on -j4 && \
     \
     mkdir -p /usr/local/lib && \
     cp /usr/local/src/v8/out/native/lib.target/lib*.so /usr/local/lib && \
