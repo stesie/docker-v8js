@@ -25,4 +25,6 @@ RUN apt-get update && \
     \
     echo extension=v8js.so > /etc/php5/cli/conf.d/99-v8js.ini && \
     \
+    rm -rf /tmp/depot_tools /usr/local/src/v8 /usr/local/src/v8js && \
+    apt-get remove subversion make g++ python2.7 curl chrpath wget && \
     apt-get clean
