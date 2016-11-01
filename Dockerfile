@@ -10,6 +10,7 @@ RUN apt-get update && \
     export PATH="$PATH:/tmp/depot_tools" && \
     \
     cd /usr/local/src && fetch v8 && cd v8 && \
+    git checkout 5.4.500.40 && gclient sync && \
     export GYPFLAGS="-Dv8_use_external_startup_data=0" && \
     export GYPFLAGS="${GYPFLAGS} -Dlinux_use_bundled_gold=0" && \
     make native library=shared snapshot=on -j4 && \
