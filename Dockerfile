@@ -23,8 +23,7 @@ RUN apt-get update && \
     \
     git clone https://github.com/preillyme/v8js.git /usr/local/src/v8js && \
     cd /usr/local/src/v8js && phpize && ./configure --with-v8js=/usr/local && \
-    export NO_INTERACTION=1 && \
-    make all test install && \
+    export NO_INTERACTION=1 && make all -j4 && make test install && \
     \
     echo extension=v8js.so > /etc/php5/cli/conf.d/99-v8js.ini && \
     \
