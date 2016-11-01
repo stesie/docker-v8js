@@ -3,7 +3,7 @@ MAINTAINER Stefan Siegl <stesie@brokenpipe.de>
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-        git subversion make g++ python2.7 curl php7.0-dev chrpath wget bzip2 && \
+        git subversion make g++ python2.7 curl php7.0-cli php7.0-dev chrpath wget bzip2 && \
     ln -s /usr/bin/python2.7 /usr/bin/python && \
     \
     git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git /tmp/depot_tools && \
@@ -27,6 +27,9 @@ RUN apt-get update && \
     \
     echo extension=v8js.so > /etc/php/7.0/cli/conf.d/99-v8js.ini && \
     \
+    cd /tmp && \
     rm -rf /tmp/depot_tools /usr/local/src/v8 /usr/local/src/v8js && \
-    apt-get remove subversion make g++ python2.7 curl chrpath wget bzip2 && \
-    apt-get clean
+    apt-get remove -y subversion make g++ python2.7 curl php7.0-dev chrpath wget bzip2 && \
+    apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
