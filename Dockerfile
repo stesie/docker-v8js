@@ -3,23 +3,20 @@ MAINTAINER Stefan Siegl <stesie@brokenpipe.de>
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
-        git subversion make g++ python2.7 curl php7.0-cli php7.0-dev chrpath wget bzip2 && \
+        git subversion make g++ python2.7 curl php7.0-cli php7.0-dev wget bzip2 xz-utils pkg-config && \
     ln -s /usr/bin/python2.7 /usr/bin/python && \
     \
     git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git /tmp/depot_tools && \
     export PATH="$PATH:/tmp/depot_tools" && \
     \
     cd /usr/local/src && fetch v8 && cd v8 && \
-    git checkout 5.4.500.40 && gclient sync && \
-    export GYPFLAGS="-Dv8_use_external_startup_data=0" && \
-    export GYPFLAGS="${GYPFLAGS} -Dlinux_use_bundled_gold=0" && \
-    make native library=shared snapshot=on -j4 && \
+    git checkout 6.2.414.15 && gclient sync && \
+    tools/dev/v8gen.py -vv x64.release -- is_component_build=true && \
+    ninja -C out.gn/x64.release/ && \
     \
     mkdir -p /usr/local/lib && \
-    cp /usr/local/src/v8/out/native/lib.target/lib*.so /usr/local/lib && \
-    echo "create /usr/local/lib/libv8_libplatform.a\naddlib out/native/obj.target/src/libv8_libplatform.a\nsave\nend" | ar -M && \
-    cp -R /usr/local/src/v8/include /usr/local && \
-    chrpath -r '$ORIGIN' /usr/local/lib/libv8.so && \
+    cp out.gn/x64.release/lib*.so out.gn/x64.release/*_blob.bin out.gn/x64.release/icudtl.dat /usr/local/lib && \
+    cp -R include/* /usr/local/include/ && \
     \
     git clone https://github.com/phpv8/v8js.git /usr/local/src/v8js && \
     cd /usr/local/src/v8js && phpize && ./configure --with-v8js=/usr/local && \
@@ -29,7 +26,7 @@ RUN apt-get update && \
     \
     cd /tmp && \
     rm -rf /tmp/depot_tools /usr/local/src/v8 /usr/local/src/v8js && \
-    apt-get remove -y subversion make g++ python2.7 curl php7.0-dev chrpath wget bzip2 && \
+    apt-get remove -y subversion make g++ python2.7 curl php7.0-dev wget bzip2 xz-utils pkg-config && \
     apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
