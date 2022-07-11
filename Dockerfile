@@ -10,7 +10,7 @@ WORKDIR /usr/local/src/v8js
 
 RUN phpize
 RUN ./configure --with-v8js=/opt/libv8-8.4 LDFLAGS="-lstdc++" CPPFLAGS="-DV8_COMPRESS_POINTERS"
-RUN make all -j4
+RUN make all -j`nproc`
 
 FROM stesie/libv8-8.4
 COPY --from=builder /usr/local/src/v8js/modules/v8js.so /usr/lib/php/20170718/
